@@ -22,6 +22,7 @@ export class NewsService {
       async findOne (id): Promise<NewsEntity> {
         return await this.newRepository.findOne({
           where: { id: id },
+          relations: ['category']
         });
       }
     
