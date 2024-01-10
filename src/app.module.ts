@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_PIPE } from '@nestjs/core';
 import { CheckTokenMiddleware } from './middleware/token.middleware';
 import { NewsController } from './news/news.controller';
+import { CategoryModule } from './category/category.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -14,11 +15,12 @@ import { NewsController } from './news/news.controller';
       port: 3306,
       username: 'root',
       password: '',
-      database: 'vaccination',
+      database: 'test',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    NewsModule
+    NewsModule,
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService, {

@@ -13,7 +13,10 @@ export class NewsService {
       ) {}
     
       async findAll (): Promise<NewsEntity[]> {
-        return await this.newRepository.find();
+        return await this.newRepository.find({
+          order: {id : "DESC"},
+          relations: ['category']
+        });
       }
     
       async findOne (id): Promise<NewsEntity> {
