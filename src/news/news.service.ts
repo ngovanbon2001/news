@@ -3,6 +3,7 @@ import { NewsEntity  } from './news.entity/news.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateResult, DeleteResult } from  'typeorm';
+import { CreateNewDto } from './dto/create-new.dto';
 
 @Injectable()
 export class NewsService {
@@ -16,12 +17,14 @@ export class NewsService {
       }
     
       async findOne (id): Promise<NewsEntity> {
-        return await this.newRepository.findOne(id)
+        return await this.newRepository.findOne({
+          where: { id: id },
+        });
       }
     
     
-      async create (news: NewsEntity): Promise<NewsEntity> {
-        return await this.newRepository.save(news)
+      async create (createNewDto: CreateNewDto): Promise<any> {
+        return await this.newRepository.save(createNewDto)
       }
     
       async update(news: NewsEntity): Promise<UpdateResult> {

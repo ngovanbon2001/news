@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
-import { NewsService } from './news.service'
-import { NewsEntity } from './news.entity/news.entity'
+import { NewsService } from './news.service';
+import { NewsEntity } from './news.entity/news.entity';
+import { CreateNewDto } from './dto/create-new.dto';
+import { CheckTokenMiddleware } from 'src/middleware/token.middleware';
 
 @Controller('news')
 export class NewsController {
@@ -19,8 +21,10 @@ export class NewsController {
     }
   
     @Post()
-    create(@Body() news: NewsEntity) {
-      return this.newService.create(news);
+    async create(@Body() createNewDto: CreateNewDto): Promise<NewsEntity> {
+    console.log("run1");
+
+      return this.newService.create(createNewDto);
     }
   
     @Put()

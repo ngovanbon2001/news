@@ -1,9 +1,11 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { NewsModule } from './news/news.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { APP_PIPE } from '@nestjs/core';
+import { CheckTokenMiddleware } from './middleware/token.middleware';
+import { NewsController } from './news/news.controller';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -19,6 +21,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     NewsModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {
+    provide: APP_PIPE,
+    useClass: ValidationPipe,
+  },],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(CheckTokenMiddleware)
+      .forRoutes({ path: 'news', method: RequestMethod.POST });
+  }
+}
